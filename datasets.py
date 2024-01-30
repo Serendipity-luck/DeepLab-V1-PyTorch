@@ -8,7 +8,8 @@ import random
 
 class VOCDataset(torch.utils.data.Dataset):
     def __init__(self, split='train_aug', crop_size=321, label_dir_path='SegmentationClassAug', is_scale=True, is_flip=True):
-        self.root = '/home/ubuntu/workshops/datasets/voc12/VOCdevkit/VOC2012/'
+        # self.root = '/home/ubuntu/workshops/datasets/voc12/VOCdevkit/VOC2012/'
+        self.root = '/home/serendipity/projects/deeplearning/datasets/voc12/VOCdevkit/VOC2012/'
         self.ann_dir_path = os.path.join(self.root, 'Annotations')
         self.image_dir_path = os.path.join(self.root, 'JPEGImages')
         self.label_dir_path = os.path.join(self.root, label_dir_path) # SegmentationClassAug_Round1

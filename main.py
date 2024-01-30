@@ -15,7 +15,7 @@ from utils import crf, losses
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 device_ids = [0]
 
-batch_size = 30 # 30 for "step", 10 for 'poly'
+batch_size = 15 # 30 for "step", 10 for 'poly'
 lr = 1e-3
 weight_decay = 5e-4
 num_max_iters = 20000 # 6000 for "step", 20000 for 'poly'
@@ -57,6 +57,7 @@ def train():
     model.load_state_dict(torch.load(init_model_path))
     model = torch.nn.DataParallel(model, device_ids=device_ids)
     model = model.to(device)
+    # 加大最后一个分类层的学习率？
     optimizer = torch.optim.SGD(
         params = [
             {

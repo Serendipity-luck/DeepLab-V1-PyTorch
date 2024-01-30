@@ -15,16 +15,17 @@ def resize_labels(labels, size):
     for label in labels:
         label = label.float().numpy()
         label = Image.fromarray(label).resize(size, resample=Image.NEAREST)
-        new_labels.append(np.asarray(label))
+        new_labels.append(np.asarray(label).astype(np.int32))
     new_labels = torch.LongTensor(new_labels)
     return new_labels
 
 def build_metrics(model, batch, device):
     CEL = nn.CrossEntropyLoss(ignore_index=255).to(device)
 
+    # pic size (321, 321)
     image_ids, images, labels = batch
     labels = resize_labels(labels, size=(41, 41)).to(device)
-    logits = model(images.to(device))
+    logits = model(images.to(device)) # output feature maps shape (41, 41)
 
     loss_seg = CEL(logits, labels)
 

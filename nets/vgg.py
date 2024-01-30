@@ -13,14 +13,16 @@ class VGG16_LargeFOV(nn.Module):
             nn.ReLU(True),
             nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
             nn.ReLU(True),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1), # downsampling 2x
+            # x.shape(batch_size, num_channels, 161, 161)
 
             ### conv2_1 conv2_2 maxpooling
             nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
             nn.ReLU(True),
             nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
             nn.ReLU(True),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1), # downsampling 4x 
+            # x.shape(batch_size, num_channels, 81, 81)
 
             ### conv3_1 conv3_2 conv3_3 maxpooling
             nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
@@ -29,8 +31,8 @@ class VGG16_LargeFOV(nn.Module):
             nn.ReLU(True),
             nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(True),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
-
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1), # downsampling 8x
+            # x.shape(batch_size, num_channels, 41, 41)
 
             ### conv4_1 conv4_2 conv4_3 maxpooling(stride=1)
             nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1),
@@ -39,7 +41,7 @@ class VGG16_LargeFOV(nn.Module):
             nn.ReLU(True),
             nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
             nn.ReLU(True),
-            nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
+            nn.MaxPool2d(kernel_size=3, stride=1, padding=1), # downsampling 8x
 
             ### conv5_1 conv5_2 conv5_3 (dilated convolution dilation=2, padding=2)
             ### maxpooling(stride=1)
@@ -54,7 +56,7 @@ class VGG16_LargeFOV(nn.Module):
             nn.AvgPool2d(kernel_size=3, stride=1, padding=1),
 
             ### fc6 relu6 drop6
-            nn.Conv2d(512, 1024, kernel_size=3, stride=1, padding=12, dilation=12),
+            nn.Conv2d(512, 1024, kernel_size=3, stride=1, padding=12, dilation=12), # Dilation conv
             nn.ReLU(True),
             nn.Dropout2d(0.5),
 
